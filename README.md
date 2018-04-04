@@ -8,15 +8,23 @@
 ## 技术工具
 
 MySQL
+
 Django(back-end)
+
 scripy(爬虫)
+
 Vue.js(front-end)
+
 Bootstrap
+
 nginx(server)
+
 wsgi
 
 ## 成员
 
 立维
+
 蛇崽
+
 联系方式：296390818@qq.com
