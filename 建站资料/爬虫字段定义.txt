@@ -1,0 +1,15 @@
+爬虫字段定义：
+图文：item  
+1 item_id(item唯一索引)
+2 title(item 标题)
+3 item_type(item类型)
+4 title_link(item 链接)
+5 source(来源：来源于哪个网站：爬取的网站)
+6 category(分类：金融，科技，三农，搞笑etc)
+7 cut_url(列表页的截图：为图片链接，没有的话置为空)
+8 collect_time(爬取时间，入库时间)
+9 like(item喜欢数)
+10 view(item浏览数)
+11 share(item分享数)
+12 author[id,avatar,name,fans_count,reads_count,collect_count]
+（作者：作者id，头像，昵称，粉丝数，总阅读数，收藏数）
