@@ -11,5 +11,13 @@
 9 like(item喜欢数)
 10 view(item浏览数)
 11 share(item分享数)
-12 author[id,avatar,name,fans_count,reads_count,collect_count]
+
+用户：
+ author
+1.id
+2.avatar
+3.name
+3.fans_count
+4.reads_count
+5.collect_count]
 （作者：作者id，头像，昵称，粉丝数，总阅读数，收藏数）
