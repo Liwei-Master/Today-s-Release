@@ -9,6 +9,6 @@ import os
 sys.path.append(os.path.join(os.getcwd()))
 
 targetLine = 'qctt'
-targetLine = 'pengfu'
-targetLine = 'zaker'
+# targetLine = 'pengfu'
+# targetLine = 'zaker'
 execute(['scrapy', 'crawl', targetLine])

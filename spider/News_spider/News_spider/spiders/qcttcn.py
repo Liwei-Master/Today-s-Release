@@ -7,33 +7,35 @@ import re
 
 import scrapy
 
+from News_spider.MyUtils import Util
+from News_spider.items import NewsItem
 
 
 class CarTouTiaoSpider(scrapy.Spider):
-    pass
-    #
-    # name = 'qctt'
-    #
-    # allowed_domains = ['www.qctt.cn']
-    #
-    # start_urls = ['https://www.qctt.cn/home/video']
-    #
-    # def parse(self, response):
-    #     item = NewsItem()
-    #     print('response ',response)
-    #     video_infos = response.xpath("//*[@class='article clearfix']")
-    #     for v_video in video_infos:
-    #         detail_link = v_video.xpath("./div[@class='img']/a/@href").extract_first()
-    #         cut_url = v_video.xpath("./div[@class='img']/a/img/@src").extract_first()
-    #         duration = v_video.xpath("./div[@class='img']/p[@class='time']/span/text()").extract_first()
-    #         title = v_video.xpath("./div[@class='words']/div[@class='part1 clearfix']/div[@class='words_title']/a/text()").extract_first()
-    #         author = v_video.xpath("./div[@class='words']/div[@class='words_1']/span[1]/text()").extract_first()
-    #         release_time = v_video.xpath("./div[@class='words']/div[@class='words_1']/span[2]/text()").extract_first()
-    #         print('duration:  ' , duration, 'author ',author,'release_' ,release_time,'title  ',title, 'cut_url :',cut_url,)
-    #         if detail_link:
-    #             yield scrapy.Request(url=detail_link,callback=self.parse_detail,meta={'item':item})
-    #
-    # def parse_detail(self,response):
-    #     item = response.meta['item']
-    #     mp4_source = response.xpath("//*[@class='video']/video[@id='video']/@src").extract_first()
-    #     print('mp4_source ',mp4_source)
+
+    name = 'qctt'
+
+    allowed_domains = ['www.qctt.cn']
+
+    start_urls = ['https://www.qctt.cn/home/video']
+
+    def parse(self, response):
+        item = NewsItem()
+        video_infos = response.xpath("//*[@class='article clearfix']")
+        for v_video in video_infos:
+            title_link = v_video.xpath("./div[@class='img']/a/@href").extract_first()
+            title = v_video.xpath("./div[@class='words']/div[@class='part1 clearfix']/div[@class='words_title']/a/text()").extract_first()
+            author = v_video.xpath("./div[@class='words']/div[@class='words_1']/span[1]/text()").extract_first()
+            release_time = v_video.xpath("./div[@class='words']/div[@class='words_1']/span[2]/text()").extract_first()
+            if title and author and title_link:
+                item['item_id'] = Util.to_md5(title)
+                item['item_title'] = title
+                item['item_type'] = "ARTICLE"
+                item['item_title'] = title
+                item['category'] = "汽车"
+                item['item_source'] = '汽车头条'
+                item['title_link'] = title_link
+                item['collect_time'] = Util.local_time()
+                item['release_time'] = release_time
+                item['author'] = author
+                yield item
