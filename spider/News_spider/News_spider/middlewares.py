@@ -6,7 +6,6 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 import random
 
-from scrapy import signals
 from News_spider.settings import USER_AGENT_LIST as user_list
 
 class UserAgentMiddleware(object):

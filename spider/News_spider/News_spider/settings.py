@@ -57,30 +57,6 @@ MYSQL_DBNAME='release_db'
 MYSQL_USER='root'
 MYSQL_PASSWD='123abcABC;'
 
-# -----  mysql setting ----- #
-
-# test_config = serviceConfig.test_config()
-# for test_conf in test_config:
-#     # print(test_conf)
-#     mongo_list = test_conf.get('mongo_list')
-#     mysql_list = test_conf.get('mysql_list')
-#     print(mongo_list)
-#     print(type(mongo_list))
-#     mongo_url = mongo_list.get('MONGO_URL')
-#     print('  ***  ',mongo_url)
-#     print(mysql_list)
-#
-#     MONGO_URL = test_conf.get('MONGO_URL')
-#     MONGO_USER=test_conf.get('MONGO_USER')
-#     MONGO_PWD=test_conf.get('MONGO_PWD')
-#     MONGO_PORT=test_conf.get('MONGO_PORT')
-#     MONGO_HOST=test_conf.get('MONGO_HOST')
-#     MONGO_DB=test_conf.get('MONGO_DB')
-#     MONGO_COLL=test_conf.get('MONGO_COLL')
-#     print('aaa ',MONGO_URL,MONGO_USER,MONGO_PWD)
-#     print('=====================')
-
-# -----  mysql ending ----- #
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html

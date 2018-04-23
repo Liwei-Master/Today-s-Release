@@ -6,22 +6,9 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import json
 
-import pymongo
 import pymysql
-from cos_lib3.cos import Cos
 
 from News_spider import settings
-#
-# cos = Cos(app_id=1255701127, secret_id='AKIDTmphJj8ta1C7mGbXNzMUO3TfcLq7azZd',
-#           secket_key='xkHYYJrCJxLTMzMTQ9dtugEXbR2OYT9a', region='sh')
-#
-#
-# image_url = 'https://image7.pengfu.com/origin/180418/5ad69e531dde0.gif'
-#
-# bucket = cos.get_bucket('matrix-dev')
-# file_name = '//yun1.janesi.net/news/test_gif.jpg'
-# upload_code = bucket.upload_file_from_url(image_url, file_name=file_name)
-# print('upload_code',upload_code)
 
 class NewsSpiderPipeline(object):
     def open_spider(self, spider):
