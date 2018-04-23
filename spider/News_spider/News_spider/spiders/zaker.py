@@ -39,22 +39,17 @@ class ZakerSpider(scrapy.Spider):
 
         for channel, tag_link in v1_dict.items():
             type_link ='http://www.myzaker.com/channel/{}'.format(tag_link)
-            # print('link: ',channel,type_link)
-            yield scrapy.Request(url=type_link,callback=self.get_main_link,meta={'channel':channel},dont_filter=True)
+            yield scrapy.Request(url=type_link,callback=self.get_main_link,meta={'channel':channel})
 
     def get_main_link(self,response):
 
         channel = response.meta['channel']
 
         article_list = response.xpath("//*[@class='figure flex-block']")
-        # print('article_list ',article_list)
         for article in article_list:
             a_link = article.xpath("./a[@class='img']/@href").extract_first()
             if a_link:
                 item_link = response.urljoin(a_link)
-                # item_link = 'http://www.myzaker.com/article/5aaf31637f780b1438015351'
-                # item_link = 'http://www.myzaker.com/article/5ab1e62d77ac6472e55e3f92/'
-                # item_link = 'http://www.myzaker.com/article/5ab1bd639490cbcb3100003f/'
                 yield scrapy.Request(url=item_link,callback=self.parse_detail,meta={'channel':channel})
 
     def parse_detail(self,response):
@@ -71,17 +66,14 @@ class ZakerSpider(scrapy.Spider):
         item_id=TimeUtil.to_md5(article_title)
         item['item_id']=item_id
         item['item_type'] = 'ARTICLE'
-        item['source']='ZAKER'
+        item['item_source']='ZAKER'
         item['title_link']=response.url
         item['cut_url'] = ''
         item['collect_time'] = TimeUtil.local_time()
         item['release_time'] = article_time
         item['author'] = article_author
         item['category'] = channel
-        print('item ',item)
         yield item
-
-
 
 """"
     item_id = scrapy.Field()
@@ -91,7 +83,7 @@ class ZakerSpider(scrapy.Spider):
     title_link = scrapy.Field()
     cut_url = scrapy.Field()
     collect_time = scrapy.Field()
-    source = scrapy.Field()
+    item_source = scrapy.Field()
     release_time = scrapy.Field()
     author = scrapy.Field()
 """

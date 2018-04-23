@@ -6,10 +6,22 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import json
 
+import pymongo
 import pymysql
+from cos_lib3.cos import Cos
 
 from News_spider import settings
-
+#
+# cos = Cos(app_id=1255701127, secret_id='AKIDTmphJj8ta1C7mGbXNzMUO3TfcLq7azZd',
+#           secket_key='xkHYYJrCJxLTMzMTQ9dtugEXbR2OYT9a', region='sh')
+#
+#
+# image_url = 'https://image7.pengfu.com/origin/180418/5ad69e531dde0.gif'
+#
+# bucket = cos.get_bucket('matrix-dev')
+# file_name = '//yun1.janesi.net/news/test_gif.jpg'
+# upload_code = bucket.upload_file_from_url(image_url, file_name=file_name)
+# print('upload_code',upload_code)
 
 class NewsSpiderPipeline(object):
     def open_spider(self, spider):
@@ -25,6 +37,12 @@ class NewsSpiderPipeline(object):
 
 
 class DBPipeline(object):
+    """
+    MYSQL_HOST
+    MYSQL_DBNAME
+    MYSQL_USER
+    MYSQL_PASSWD
+    """
 
     def __init__(self):
         # 连接数据库
@@ -36,21 +54,9 @@ class DBPipeline(object):
 
     def process_item(self, item, spider):
         try:
-            # 查重处理
-            self.cursor.execute("""select * from doubanmovie where img_url = %s""", item['img_url'])
-            # 是否有重复数据
-            repetition = self.cursor.fetchone()
-
-            # 重复
-            if repetition:
-                pass
-
-            else:
-                # 插入数据
-                self.cursor.execute("""insert into doubanmovie(name, info, rating, num ,quote, img_url)
-                    value (%s, %s, %s, %s, %s, %s)""",
-                    (item['name'], item['info'], item['rating'], item['num'], item['quote'], item['img_url']))
-
+            self.cursor.execute("""insert into display_item (item_id, item_title, item_type ,item_source,title_link, cut_url,collect_time ,category,author)
+                value (%s, %s, %s, %s, %s,%s, %s,%s,%s)""",
+                (item['item_id'], item['item_title'], item['item_type'], item['item_source'],item['title_link'], item['cut_url'], item['collect_time'],item['category'],item['author']))
             # 提交sql语句
             self.connect.commit()
 

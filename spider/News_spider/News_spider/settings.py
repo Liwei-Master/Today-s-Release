@@ -8,6 +8,7 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
+from News_spider.config import serviceConfig
 
 BOT_NAME = 'News_spider'
 
@@ -50,13 +51,34 @@ SPIDER_MIDDLEWARES = {
    'News_spider.middlewares.UserAgentMiddleware': 543,
 }
 
+MYSQL_HOST='59.110.140.40'
+MONGO_PORT=3306
+MYSQL_DBNAME='release_db'
+MYSQL_USER='root'
+MYSQL_PASSWD='123abcABC;'
+
 # -----  mysql setting ----- #
 
-MYSQL_HOST = ''
-MYSQL_DBNAME = ''
-MYSQL_USER = ''
-MYSQL_PASSWD = ''
-MYSQL_PORT = 3306
+# test_config = serviceConfig.test_config()
+# for test_conf in test_config:
+#     # print(test_conf)
+#     mongo_list = test_conf.get('mongo_list')
+#     mysql_list = test_conf.get('mysql_list')
+#     print(mongo_list)
+#     print(type(mongo_list))
+#     mongo_url = mongo_list.get('MONGO_URL')
+#     print('  ***  ',mongo_url)
+#     print(mysql_list)
+#
+#     MONGO_URL = test_conf.get('MONGO_URL')
+#     MONGO_USER=test_conf.get('MONGO_USER')
+#     MONGO_PWD=test_conf.get('MONGO_PWD')
+#     MONGO_PORT=test_conf.get('MONGO_PORT')
+#     MONGO_HOST=test_conf.get('MONGO_HOST')
+#     MONGO_DB=test_conf.get('MONGO_DB')
+#     MONGO_COLL=test_conf.get('MONGO_COLL')
+#     print('aaa ',MONGO_URL,MONGO_USER,MONGO_PWD)
+#     print('=====================')
 
 # -----  mysql ending ----- #
 
@@ -76,7 +98,7 @@ MYSQL_PORT = 3306
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'News_spider.pipelines.NewsSpiderPipeline': 300,
-   # 'News_spider.pipelines.DBPipeline': 200,
+   'News_spider.pipelines.DBPipeline': 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
