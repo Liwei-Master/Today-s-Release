@@ -8,7 +8,7 @@ mkdir $dirname
 cd $dirname
 
 
-scrapy crawl zaker     > /home/admin/todays_spider/log/crawler.log 2>&1
-scrapy crawl pengfu   > /home/admin/todays_spider/log/crawler.log 2>&1
-scrapy crawl qncye   > /home/admin/todays_spider/log/crawler.log 2>&1
+scrapy crawl zaker     > /home/admin/Today-s-Release/spider/News_spider/log/crawler.log 2>&1
+scrapy crawl pengfu   > /home/admin/Today-s-Release/spider/News_spider/log/crawler.log 2>&1
+scrapy crawl qncye   > /home/admin/Today-s-Release/spider/News_spider/log/crawler.log 2>&1
 
