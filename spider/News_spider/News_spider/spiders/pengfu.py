@@ -40,6 +40,7 @@ class PengfuSpider(scrapy.Spider):
                 item['collect_time'] = Util.local_time()
                 item['release_time'] = Util.local_time()
                 item['author'] = author_name
+                item['cut_url'] = ''
                 yield item
 
 

@@ -38,4 +38,5 @@ class CarTouTiaoSpider(scrapy.Spider):
                 item['collect_time'] = Util.local_time()
                 item['release_time'] = release_time
                 item['author'] = author
+                item['cut_url'] = ''
                 yield item
