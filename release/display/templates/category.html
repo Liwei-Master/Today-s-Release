@@ -137,34 +137,6 @@
 
 </div>
 
-    <div class="container">
-	  <div class="list-group" style="width: 69%;display: inline-block;">
-	  <h2 style="display:block;line-height:76px;">今日重磅</h2>
-	      {% if hit_news %}
-          {% for news in hit_news %}
-	      <div class="list-group-item list-group-item-action" style="margin-bottom:20px; overflow: hidden;">
-	          <img src="{{ news.cut_url }}" class="float-right" alt="Cinque Terre" width="100">
-	          <div>
-	              <div>
-	                  <a href="{{ news.title_link }}">{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
-	                  <p>浏览数:<span>{{news.view_count}}</span> 来源:<span>{{news.author}}</span> 时间:<span>{{news.collect_time}}</span></p>
-	              </div>
-	          </div>
-	      </div>
-          {% endfor %}
-          {% endif %}
-      </div>
-
-      <div class="another-content" style="display:inline-block;width:30%;height:200px;padding:0 20px ;vertical-align: top;" >
-            <div style="width:100%; background: white;margin-bottom:20px; border: 2px solid lightblue; border-radius: 8px;">
-                <ol class="d">
-                    {% for news in hit_news_list %}
-                    <a href="news.title_link"><li>{{ news.item_title}}</li></a>
-                    {% endfor %}
-                </ol>
-            </div>
-	  </div>
-    </div>
 </div>
 
 </body>

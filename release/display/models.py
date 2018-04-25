@@ -8,32 +8,23 @@ import datetime
 
 
 class Item(models.Model):
-    item_id = models.IntegerField(default=0)
+    item_id = models.CharField(max_length=200, unique=True)
     item_title = models.CharField(max_length=50, default='news')
-    item_type = models.CharField(max_length=5, default='最新')
+    item_type = models.CharField(max_length=10, default='最新')
     title_link = models.URLField()
     cut_url = models.URLField()
-    # 每当对象被创建时，自动设为当前日期，常用于保存创建日期(注意，它是不可修改的)
-    collect_time = models.DateField(auto_now_add=True)
+    collect_time = models.DateField()
+    author = models.CharField(max_length=20, default='unknown author')
 
-    source = models.CharField(max_length=20)
+    item_source = models.CharField(max_length=20, default='unknown source')
 
-    CATA_CHOICES = {
-        ('news', '时政'),
-        ('entertain', '娱乐'),
-        ('sport', '体育'),
-        ('jobs', '职位'),
-        ('music', '音乐'),
-        ('funs', '段子'),
-        ('military', '军事'),
-        ('bonus', '福利'),
-    }
+    category = models.CharField(max_length=20, default='unknown category')
 
-    like = models.IntegerField(default=0)
+    like_count = models.IntegerField(default=0)
 
-    view = models.IntegerField(default=0)
+    view_count = models.IntegerField(default=0)
 
-    share = models.IntegerField(default=0)
+    share_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.item_id
@@ -43,4 +34,24 @@ class Item(models.Model):
 
         return timezone - self.collect_time <= datetime.timedelta(days=2)
 
+
+class HitItem(models.Model):
+    item_id = models.CharField(max_length=200, unique=True)
+    item_title = models.CharField(max_length=50, default='news')
+    item_type = models.CharField(max_length=10, default='最新')
+    title_link = models.URLField()
+
+    rank = models.IntegerField(default=0)
+    collect_time = models.DateField()
+
+    item_source = models.CharField(max_length=20, default='unknown source')
+
+    like_count = models.IntegerField(default=0)
+
+    view_count = models.IntegerField(default=0)
+
+    share_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.item_id
 
