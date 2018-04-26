@@ -7,7 +7,7 @@ from user_system.models import User
 # Create your views here.
 
 def index(request):
-    admired_category = "娱乐"
+    admired_category = "搞笑"
     if request.session.get('is_login', None):
         #
         admired_category = request.session
@@ -35,5 +35,10 @@ def index(request):
 
 
 def recommendation():
+    pass
+
+    # 分类模块
+def categoryaction(request):
+
     pass
 

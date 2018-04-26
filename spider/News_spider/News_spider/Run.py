@@ -11,4 +11,5 @@ sys.path.append(os.path.join(os.getcwd()))
 targetLine = 'qctt'
 # targetLine = 'pengfu'
 # targetLine = 'zaker'
+targetLine = 'pearvideo'
 execute(['scrapy', 'crawl', targetLine])

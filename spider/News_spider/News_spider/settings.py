@@ -50,11 +50,21 @@ SPIDER_MIDDLEWARES = {
    'News_spider.middlewares.UserAgentMiddleware': 543,
 }
 
-MYSQL_HOST='59.110.140.40'
+## 远程服务器---------------
+
+# MYSQL_HOST='59.110.140.40'
+# MONGO_PORT=3306
+# MYSQL_DBNAME='release_db'
+# MYSQL_USER='root'
+# MYSQL_PASSWD='123abcABC;'
+
+## 本地服务器 --------------
+
+MYSQL_HOST='127.0.0.1'
 MONGO_PORT=3306
 MYSQL_DBNAME='release_db'
 MYSQL_USER='root'
-MYSQL_PASSWD='123abcABC;'
+MYSQL_PASSWD='root;'
 
 
 # Enable or disable downloader middlewares
