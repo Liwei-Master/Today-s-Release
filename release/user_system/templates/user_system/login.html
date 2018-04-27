@@ -10,12 +10,12 @@
 
 	<title>Impostor</title>
 
-	<script src="../static/jQuery/3.2.0/jquery.min.js"></script>
-    <script src="../static/js/Post.js"></script>
+	<script src="../../static/jQuery/3.2.0/jquery.min.js"></script>
+    <script src="../../static/js/Post.js"></script>
     <style>
     @font-face {font-family: "iconfont";
-    src: url('../static/css/font/iconfont.eot'); /* IE9*/
-    src: url('../static/css/font/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    src: url('../../static/css/font/iconfont.eot'); /* IE9*/
+    src: url('../../static/css/font/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('../static/css/font/iconfont.woff') format('woff'), /* chrome、firefox */
     url('../static/css/font/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
     url('../static/css/font/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
@@ -49,8 +49,8 @@ body{
 	background-color: black;
 }
 @font-face {font-family: 'iconfont';
-    src: url('../static/css/font/iconfont.eot'); /* IE9*/
-    src: url('../static/css/font/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    src: url('../../static/css/font/iconfont.eot'); /* IE9*/
+    src: url('../../static/css/font/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('../static/css/font/iconfont.woff') format('woff'), /* chrome、firefox */
     url('../static/css/font/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
     url('../static/css/font/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
@@ -112,8 +112,8 @@ li:after, div:after, ul:after{
 	position: absolute;
 	width: 100%;
 	height: 700px;
-	background: url(../static/picture/bg.png) center bottom no-repeat \9;
-	background: url(../static/picture/bg.png) center bottom/cover no-repeat;
+	background: url(../../static/picture/bg.png) center bottom no-repeat \9;
+	background: url(../../static/picture/bg.png) center bottom/cover no-repeat;
 }
 
 /*@media screen and (min-width: 320px) {
@@ -169,7 +169,7 @@ li:after, div:after, ul:after{
 	margin-bottom: 50px;
 	width: 500px;
 	height: 100px;
-	background: url(../static/picture/logo.png) center  no-repeat ;
+	background: url(../../static/picture/logo.png) center  no-repeat ;
 }
 
 .login-box{
@@ -421,7 +421,7 @@ a.reacquire{
 		<div class="box-con tran">
 
 			<div class="login-con f-l">
-                <form action=" /login/" class="form-horizontal" role="form" method = "post">
+                <form action=" {% url 'login:login' %}" class="form-horizontal" role="form" method = "post">
                     {% csrf_token %}
 
 				<div class="form-group">
@@ -442,7 +442,7 @@ a.reacquire{
 
 					<button type="submit" class="tran pr" id="login111" onclick = "record()" >
 
-						<a href="" class="tran login" onclick = "record()">Login</a>
+						<a href="" class="tran login" onclick = "record()">登录</a>
 
 						<!-- <img class="loading" src="images/loading.gif" style="display:block">
  -->
@@ -510,11 +510,6 @@ a.reacquire{
 						<input id = "set_name" type="text"  name = "name" placeholder="name">
 
 					</div>
-                    <div class="form-group">
-
-						<input id = "set_name" type="text"  name = "sex" placeholder="Male or Female">
-
-					</div>
 
 					<div class="form-group">
 
@@ -530,7 +525,7 @@ a.reacquire{
 
 							<a href="" class="tran">Register</a>
 
-							<img class="loading" src="../static/picture/loading.gif">
+							<img class="loading" src="../../static/picture/loading.gif">
 
 						</button>
 
@@ -559,7 +554,7 @@ a.reacquire{
 
 							<a href="javascript:;" class="tran">获取短信验证码</a>
 
-							<img class="loading" src="../static/picture/loading.gif">
+							<img class="loading" src="../../static/picture/loading.gif">
 
 						</button>
 
@@ -674,7 +669,7 @@ a.reacquire{
 
 						<a href="" class="tran">发送邮件验证码</a>
 
-						<img class="loading" src="../../../static/login/images/loading.gif">
+						<img class="loading" src="../../static/picture/loading.gif">
 
 					</button>
 
@@ -682,6 +677,7 @@ a.reacquire{
                 </form>
                 <form action="{% url 'login:forget_password' %}" method="post">
                     {% csrf_token %}
+                    <input style="display: none" type="text" placeholder="请输入您的邮箱地址" name="user_email" value='{{ user_email }}' >
                     <div class="form-group">
 
 					<input type="password" placeholder="邮箱验证码" onblur="verify.PasswordLenght(this)" style="display: block;" name="code">
@@ -699,9 +695,9 @@ a.reacquire{
 
 					<button type="submit" class="resetPSD">
 
-						<a href="javascript:" class="tran">Finish</a>
+						<a href="javascript:" class="tran">完成</a>
 
-						<img class="loading" src="../../../static/login/images/loading.gif">
+						<img class="loading" src="../../static/picture/loading.gif">
 
 					</button>
 

@@ -4,16 +4,34 @@ from django.db import models
 
 
 class User(models.Model):
-    user_id = models.IntegerField(unique=True, default=0)
     name = models.CharField(unique=True, max_length=20)
     email = models.EmailField(unique=True)
+    password = models.CharField(max_length=256, default="123456")
+    has_confirmed = models.BooleanField(default=False)
+    # c_time = models.DateTimeField(auto_now_add=True)
 
     fans_count = models.IntegerField(default=0)
     read_count = models.IntegerField(default=0)
     collect_count = models.IntegerField(default=0)
+    code = models.IntegerField(default=000000)
 
     def __str__(self):
         return self.name
+
+
+class ConfirmString(models.Model):
+    code = models.CharField(max_length=256)
+    user = models.OneToOneField('User')
+    c_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.name + ":   " + self.code
+
+    class Meta:
+
+        ordering = ["-c_time"]
+        verbose_name = "确认码"
+        verbose_name_plural = "确认码"
 
 
 class Fan(models.Model):
@@ -30,4 +48,12 @@ class Fan(models.Model):
         return self.name
 
 
+class Interest(models.Model):
+    user = models.OneToOneField(User)
+    first_interest = models.CharField(default=None, max_length=20)
+    second_interest = models.CharField(default=None, max_length=20)
+    third_interest = models.CharField(default=None, max_length=20)
+
+    def __str__(self):
+        return self.first_interest
 

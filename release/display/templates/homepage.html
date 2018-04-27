@@ -62,12 +62,20 @@
     <button class="btn btn-success" type="submit">搜索全站</button>
   </form>
   <ul class="navbar-nav" style="position: absolute;right:0;">
-    <li class= "nav-item">
-         <a class="nav-link" href="#">登录</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">注册</a>
-    </li>
+      {% if not request.session.is_login %}
+          <li class= "nav-item">
+         <a class="nav-link" href="{% url 'login:login' %}">登录</a>
+          </li>
+
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'login:login' %}">注册</a>
+          </li>
+      {% else %}
+          <li class= "nav-item">
+          <a class="nav-link" href="{% url 'login:logout' %}">退出</a>
+          </li>
+     {% endif %}
+
   </ul>
 </nav>
 
@@ -94,8 +102,8 @@
 
               <div style="width:100%; background: white;margin-bottom:20px; border-radius: 8px;">
                 <div class="user-pic"> <a href=""><img class="img-responsive img-circle" src="https://ww4.sinaimg.cn/thumb180/c0679ecagw1faxmyl9s8ig208c08c4qp.jpg" alt="头像不在了"></a></div>
-                <div class="user-name"><a href=""></a></div>
-                <p >粉丝数：<span>{{200}}</span>收藏：<span>{{21}}</span></p>
+                <div class="user-name"><a href="">{{ request.session.user_name}}</a></div>
+                <p >粉丝数：<span>{{1}}</span>收藏：<span>{{21}}</span></p>
               </div>
 
               <div style="width:100%; height:200px; background: white;margin-bottom:20px; margin-top:50px; border: 2px solid lightblue; border-radius: 8px;">
