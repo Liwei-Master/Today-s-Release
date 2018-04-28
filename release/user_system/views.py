@@ -34,6 +34,9 @@ def login(request):
             request.session['user_name'] = user.name
             request.session['email_address'] = user.email
 
+            request.session['fan'] = user.fans_count
+            request.session['collect'] = user.collect_count
+
             # more info about redirect in 'https://docs.djangoproject.com/en/2.0/topics/http/shortcuts/'
             return redirect('/main/')
         else:

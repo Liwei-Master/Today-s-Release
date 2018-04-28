@@ -31,14 +31,31 @@ def index(request):
                'hit_news_list': hit_news_list,
                }
 
-    return render(request, 'homepage.html', context)
+    return render(request, 'display/homepage.html', context)
 
 
 def recommendation():
     pass
 
+
     # 分类模块
-def categoryaction(request):
+def category(request, category):
+    news = Item.objects.order_by("collect_time")
+    daily_news = news.order_by('collect_time').filter(category=category)[:6]
 
-    pass
+    context = {
+        'daily_news': daily_news,
+        }
 
+    return render(request, 'display/category.html', context)
+
+
+def search(request):
+    if request.POST:
+        keywords = request.POST.get('keywords')
+        result = Item.objects.filter(item_title__contains=keywords)[:6]
+        context = {
+            'daily_news': result,
+        }
+
+        return render(request, 'display/category.html', context)
