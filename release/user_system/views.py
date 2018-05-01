@@ -33,6 +33,8 @@ def login(request):
             request.session['user_id'] = user.id
             request.session['user_name'] = user.name
             request.session['email_address'] = user.email
+            request.session['age'] = user.age
+            request.session['labels'] = user.labels
 
             request.session['fan'] = user.fans_count
             request.session['collect'] = user.collect_count
@@ -67,6 +69,7 @@ def register(request):
     if request.POST:
         name = request.POST.get('name')
         password = request.POST.get('password')
+        age = request.POST.get('age')
         # 保证邮箱是有效的
         try:
             email = request.POST.get('email')
@@ -85,7 +88,7 @@ def register(request):
             return render(request, 'user_system/login.html', {'error_info': 'The name you filled in is registered already'})
 
         # 创建一个新用户
-        user = User(name=name, email=email, password=hash_code(password))
+        user = User(name=name, email=email, age=age, password=hash_code(password))
         user.save()
 
         code = make_confirm_string(user)
@@ -200,3 +203,19 @@ def logout(request):
         request.session.flush()
 
     return redirect("/main/")
+
+
+def add_label(request):
+    if request.POST:
+        label = request.POST.get('label')
+        user_email = request.session['email_address']
+        user = User.objects.get(email=user_email)
+        user.labels = user.labels + '/' + label
+        user.save()
+        request.session['labels'] = user.labels.split('/')
+
+    return render(request, 'user_system/personal_info.html')
+
+
+def delete_label(request):
+    pass

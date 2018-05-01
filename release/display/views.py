@@ -59,3 +59,24 @@ def search(request):
         }
 
         return render(request, 'display/category.html', context)
+
+
+def personal_info(request):
+    labels = request.session['labels']
+    if type(labels) == str:
+        labels_list = labels.split("/")
+        request.session['labels'] = labels_list
+    return render(request, 'user_system/personal_info.html')
+
+
+def history(request):
+    return render(request, 'user_system/history.html')
+
+
+def personal_interest(request):
+    return render(request, 'user_system/personal_interest.html')
+
+
+def personal_warehouse(request):
+    return render(request, 'user_system/personal_warehouse.html')
+

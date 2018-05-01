@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <title>今日发布</title>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
+    <title>{% block title %}base{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../static/bootstrap/4.0.0-beta/css/bootstrap.min.css">
     <script src="../../../static/jQuery/3.3.1/jquery.min.js"></script>
@@ -29,9 +29,9 @@
            /* margin-top: 10px;*/
        }
     </style>
+    {% block css %}{% endblock %}
 </head>
 <body>
-
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" >
   <!-- Brand/logo -->
   <a class="navbar-brand" href="{% url 'display:index' %}">今日发布</a>
@@ -63,7 +63,6 @@
       <input class="form-control" type="text" placeholder="Search" name="keywords">
       <button class="btn btn-success" type="submit">搜索全站</button>
   </form>
-
   <ul class="navbar-nav" style="position: absolute;right:0;">
       {% if not request.session.is_login %}
           <li class= "nav-item">
@@ -81,42 +80,21 @@
 
   </ul>
 </nav>
-
 <div id="section1" class="container-fluid" style="padding-top:70px;padding-bottom:70px">
       <div class="container">
-          <div class="list-group" style="width: 69%;display: inline-block;">
-              <h2 style="display:block;line-height:76px;">日常发布</h2>
-              {% if daily_news %}
-                  {% for news in daily_news %}
-                      <div class="list-group-item list-group-item-action" style="margin-bottom:20px; overflow: hidden;">
-                          <img src="{{ news.cut_url }}" class="float-right" alt="Cinque Terre" width="100">
-                          <div>
-                              <div>
-                                  <a href="{{ news.title_link }}" target="_blank" >{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
-                                  <p>浏览数:<span>{{news.view_count}}</span> 来源:<span>{{news.author}}</span> 时间:<span>{{news.collect_time}}</span></p>
-                              </div>
-                          </div>
-                      </div>
-                  {% endfor %}
-              {% endif %}
+          <div style="width: 69%;display: inline-block;">
+              {% block content %}{% endblock %}
           </div>
-
-          <div class="another-content" style="display:inline-block;width:30%;height:200px;padding:0 20px ;vertical-align: top;" >
-              {% if request.session.is_login %}
-              <div style="width:100%; background: white;margin-bottom:20px; border-radius: 8px;">
+		  <div class="another-content" style="display:inline-block;width:30%;height:200px;padding:0 20px ;vertical-align: top;" >
+			  <div style="width:100%; background: white;margin-bottom:20px; border-radius: 8px;">
                 <div class="user-pic"> <a href="{% url 'display:personal_info' %}"><img class="img-responsive img-circle" src="https://ww4.sinaimg.cn/thumb180/c0679ecagw1faxmyl9s8ig208c08c4qp.jpg" alt="头像不在了"></a></div>
                 <div class="user-name"><a href="{% url 'display:personal_info' %}">{{ request.session.user_name}}</a></div>
                 <p >粉丝数：<span>{{request.session.fan}}</span>收藏：<span>{{request.session.collect}}</span></p>
               </div>
-              {% else %}
-              <div style="width:100%; background: white;margin-bottom:20px; border-radius: 8px;">
-                <div class="user-pic"> <a href=""><img class="img-responsive img-circle" src="../../../static/picture/userpic.png" alt="头像不在了"></a></div>
-                <div class="user-name"><a href="{% url 'login:login' %}">未登陆</a></div>
-              </div>
-              {% endif %}
-
-          </div>
-      </div>
+		  </div>
+	</div>
 </div>
+
 </body>
 </html>
+<!--extends 模板只能在服务器运行的情况下才能测试-->

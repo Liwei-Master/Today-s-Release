@@ -5,6 +5,7 @@ from django.db import models
 
 class User(models.Model):
     name = models.CharField(unique=True, max_length=20)
+    age = models.CharField(max_length=10, default="老大叔")
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=256, default="123456")
     has_confirmed = models.BooleanField(default=False)
@@ -12,6 +13,8 @@ class User(models.Model):
 
     fans_count = models.IntegerField(default=0)
     read_count = models.IntegerField(default=0)
+    labels = models.CharField(max_length=100, default="待探索")
+
     collect_count = models.IntegerField(default=0)
     code = models.IntegerField(default=000000)
 
@@ -53,6 +56,7 @@ class Interest(models.Model):
     first_interest = models.CharField(default=None, max_length=20)
     second_interest = models.CharField(default=None, max_length=20)
     third_interest = models.CharField(default=None, max_length=20)
+    key_words = models.CharField(default=None, max_length=10)
 
     def __str__(self):
         return self.first_interest

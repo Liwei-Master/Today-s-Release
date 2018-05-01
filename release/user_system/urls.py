@@ -11,4 +11,6 @@ urlpatterns = [
         # url(r'^update_info/$', views.update_info, name="update_info"),
         url(r'^send_code/$', views.send_code, name="send_code"),
         url(r'^forget_code/$', views.forget_password, name='forget_password'),
+        url(r'^add_labels/', views.add_label, name='add_label'),
+
 ]
