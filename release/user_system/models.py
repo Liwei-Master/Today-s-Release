@@ -61,3 +61,14 @@ class Interest(models.Model):
     def __str__(self):
         return self.first_interest
 
+
+class History(models.Model):
+    user = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+    )
+    title_link = models.URLField(default='www.baidu.com')
+    item_title = models.CharField(default='news', max_length=50)
+
+    def __str__(self):
+        return self.item_title

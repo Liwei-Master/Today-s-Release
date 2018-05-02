@@ -11,8 +11,8 @@ urlpatterns=[
     # url(r'^today/hit', views.hit, name="interest"),
 
     url(r'^personal_info/', views.personal_info, name='personal_info'),
-    url(r'^history/', views.history, name='history'),
     url(r'^personal_interest/', views.personal_interest, name='personal_interest'),
     url(r'^personal_warehouse/', views.personal_warehouse, name='personal_warehouse'),
+    url(r'^(?P<url>[\s\S]*)', views.click, name='click'),
 
 ]

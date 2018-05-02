@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Item
-from user_system.models import User
+from user_system.models import User, History
+from display.models import Item
 # python manage.py startapp name
 
 
@@ -62,15 +63,14 @@ def search(request):
 
 
 def personal_info(request):
+    user_id = request.session['user_id']
+    user = User.objects.get(pk=user_id)
+    history = user.history_set.all()[:10]
     labels = request.session['labels']
     if type(labels) == str:
         labels_list = labels.split("/")
         request.session['labels'] = labels_list
-    return render(request, 'user_system/personal_info.html')
-
-
-def history(request):
-    return render(request, 'user_system/history.html')
+    return render(request, 'user_system/personal_info.html', {'history': history})
 
 
 def personal_interest(request):
@@ -80,3 +80,14 @@ def personal_interest(request):
 def personal_warehouse(request):
     return render(request, 'user_system/personal_warehouse.html')
 
+
+def click(request, url):
+    item = Item.objects.get(title_link=url)
+    item.view_count += 1
+    item.save()
+    if request.session.get('is_login', None):
+        user_id = request.session['user_id']
+        user = User.objects.get(pk=user_id)
+        record = History(user=user, title_link=url, item_title=item.item_title)
+        record.save()
+    return redirect(url)

@@ -92,7 +92,7 @@
                           <img src="{{ news.cut_url }}" class="float-right" alt="Cinque Terre" width="100">
                           <div>
                               <div>
-                                  <a href="{{ news.title_link }}" target="_blank" >{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
+                                  <a href="{% url 'display:click' news.title_link %}" target="_blank" >{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
                                   <p>浏览数:<span>{{news.view_count}}</span> 来源:<span>{{news.author}}</span> 时间:<span>{{news.collect_time}}</span></p>
                               </div>
                           </div>

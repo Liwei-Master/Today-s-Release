@@ -91,6 +91,15 @@
                 <div class="user-name"><a href="{% url 'display:personal_info' %}">{{ request.session.user_name}}</a></div>
                 <p >粉丝数：<span>{{request.session.fan}}</span>收藏：<span>{{request.session.collect}}</span></p>
               </div>
+
+              <div style="width:100%; height:200px; background: white;margin-bottom:20px; margin-top:50px;">
+                  <p>浏览历史：</p>
+                <ol class="d">
+                    {% for record in history %}
+                    <a href="record.title_link"><li>{{ record.item_title}}</li></a>
+                    {% endfor %}
+                </ol>
+              </div>
 		  </div>
 	</div>
 </div>
