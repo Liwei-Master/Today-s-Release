@@ -59,7 +59,7 @@ class HitItem(models.Model):
 class Images(models.Model):
     item_id = models.IntegerField(default=0)
     item_title = models.CharField(max_length=20, default='图片')
-    item_link = models.URLField
+    item_url = models.URLField(default='http://img.ivsky.com/img/bizhi/li/201602/04/nba-001.jpg')
     collect_time = models.DateField()
     item_source = models.CharField(max_length=10, default=20)
     like_count = models.IntegerField(default=0)

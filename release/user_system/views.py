@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from .models import User, ConfirmString
+from .models import User, ConfirmString, Interest, Label
 from django.conf import settings
 
 import datetime
@@ -34,7 +34,7 @@ def login(request):
             request.session['user_name'] = user.name
             request.session['email_address'] = user.email
             request.session['age'] = user.age
-            request.session['labels'] = user.labels
+            request.session['labels'] = user.labels.split('/')[1:]
 
             request.session['fan'] = user.fans_count
             request.session['collect'] = user.collect_count
@@ -90,7 +90,10 @@ def register(request):
         # 创建一个新用户
         user = User(name=name, email=email, age=age, password=hash_code(password))
         user.save()
-
+        interest = Interest(user=user)
+        interest.save()
+        label = Label(user=user, label='最喜欢')
+        label.save()
         code = make_confirm_string(user)
         send_email(email, code)
         return render(request, 'user_system/login.html', {'error_info': '请前往注册邮箱，进行邮件确认！'})
@@ -125,6 +128,7 @@ def send_code(request):
         return render(request, 'user_system/login.html', {'error_info': message, 'user_email': code_email})
 
     return render(request, 'user_system/login.html', {'error_info': message})
+
 
 def send_email(email, code):
 
@@ -212,10 +216,26 @@ def add_label(request):
         user = User.objects.get(email=user_email)
         user.labels = user.labels + '/' + label
         user.save()
-        request.session['labels'] = user.labels.split('/')
+        request.session['labels'] = user.labels.split('/')[1:]
+        history = user.history_set.all()[:10]
 
-    return render(request, 'user_system/personal_info.html')
+        return render(request, 'user_system/personal_info.html', {'history': history})
 
 
-def delete_label(request):
-    pass
+def delete_label(request, label):
+    user_id = request.session['user_id']
+    user = User.objects.get(pk=user_id)
+    history = user.history_set.all()[:10]
+
+    start = user.labels.index(label)
+    end = start + len(label)
+    label = user.labels[:start-1] + user.labels[end:]
+    user.labels = label
+    user.save()
+    request.session['labels'] = label.split('/')[1:]
+
+    return render(request, 'user_system/personal_info.html', {'history': history})
+
+
+
+

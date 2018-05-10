@@ -2,19 +2,18 @@
 {% block title %}个人信息{% endblock %}
 
 {% block content %}
-			  <div class="container">
-                  <ul class="nav nav-tabs">
-                      <li class="nav-item">
-                          <a class="nav-link active" href="{% url 'display:personal_info' %}">个人信息</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href='{% url 'display:personal_warehouse' %}'>收藏</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="{% url 'display:personal_interest' %}">兴趣偏好</a>
-                      </li>
-                  </ul>
-              </div>
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'display:personal_info' %}">个人信息</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='{% url 'display:personal_warehouse' %}'>收藏</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'display:personal_interest' %}">兴趣偏好</a>
+            </li>
+        </ul>
 
      <table class="table table-bordered" style="margin: 1%">
         <thead>
@@ -31,24 +30,24 @@
             <td>{{ request.session.email_address }}</td>
         </tr>
     </table>
-    {% if request.session.labels == "待探索" %}
+    {% if not request.session.labels %}
         <p>
-        标签：<span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ request.session.labels }}</span>
-            <button id="btn1" type="button" class="btn btn-info">More options</button>
+        标签：<span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">未探索</span>
         <p>
     {% else %}
         <p>标签：
         {% for label in request.session.labels %}
-        <span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ label }}</span>
+            <a href="{% url 'login:delete_label' label %}"> <span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ label }}</span></a>
         {% endfor %}
         </p>
-        <form action="{% url 'login:add_label' %}" method="post">
-        {% csrf_token %}
-            <label for="form-room-description">新标签：</label>
-            <input type="text" class="form-control col-lg-2" id="" name="label" value="">
-            <button id="btn1" type="submit" class="btn btn-info">添加</button>
-        </form>
     {% endif %}
+     <form action="{% url 'login:add_label' %}" method="post">
+         {% csrf_token %}
+         <label for="form-room-description">新标签：</label>
+         <input type="text" class="form-control col-lg-2" id="" name="label" value="">
+         <button id="btn1" type="submit" class="btn btn-info">添加</button>
+     </form>
+    </div>
 
 {% endblock %}
 

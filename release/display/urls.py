@@ -13,6 +13,10 @@ urlpatterns=[
     url(r'^personal_info/', views.personal_info, name='personal_info'),
     url(r'^personal_interest/', views.personal_interest, name='personal_interest'),
     url(r'^personal_warehouse/', views.personal_warehouse, name='personal_warehouse'),
+    url(r'^personal_interest/', views.personal_interest, name='personal_interest'),
+    url(r'^modify_interest/', views.modify_interest, name='modify_interest'),
+    url(r'^modify_keywords/', views.modify_keywords, name='modify_keywords'),
+    url(r'^add_collection/', views.add_collection, name='add_collection'),
     url(r'^(?P<url>[\s\S]*)', views.click, name='click'),
 
 ]

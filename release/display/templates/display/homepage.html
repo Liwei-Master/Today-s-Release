@@ -8,6 +8,35 @@
     <script src="../../../static/jQuery/3.3.1/jquery.min.js"></script>
     <script src="../../../static/js/1.12.9_umd/popper.min.js"></script>
     <script src="../../../static/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script>
+    function collection(url, name, type, click_id){
+        console.log(url, name, type);
+        var submit_data= {
+            url: url,
+            name: name,
+            type: type
+        };
+
+        $.ajax({
+                url:"{% url 'display:add_collection' %}",
+{#                启用原生模式传输#}
+                tradition:true,
+{#              通过JSON.stringify()方法将数组以json格式转换成字符串#}
+                data:JSON.stringify(submit_data),
+                type:'POST',
+{#                success用来接收login()函数执行之后的return HttpResponse返回值#}
+                success:function(arg){
+{#                    因为接收到的是json object,所以需要调用JSON.stringify字符串化，然后解析#}
+                    arg = JSON.stringify(arg);
+                    var info_list= $.parseJSON(arg);
+                    var alert_str=info_list.info;
+                    $('#info').text(alert_str);
+                    $('#'+click_id).remove();
+
+                }
+            });
+    }
+    </script>
    <style>
        .user-pic{
            border-radius: 50%;
@@ -64,6 +93,7 @@
       <button class="btn btn-success" type="submit">搜索全站</button>
   </form>
 
+    <p id = 'as'>1</p>
   <ul class="navbar-nav" style="position: absolute;right:0;">
       {% if not request.session.is_login %}
           <li class= "nav-item">
@@ -84,21 +114,37 @@
 
 <div id="section1" class="container-fluid" style="padding-top:70px;padding-bottom:70px">
       <div class="container">
+          <div class="alert alert-info" style="margin: 1%">
+            <strong id="info">{{ info }}</strong>
+          </div>
           <div class="list-group" style="width: 69%;display: inline-block;">
               <h2 style="display:block;line-height:76px;">日常发布</h2>
               {% if daily_news %}
-                  {% for news in daily_news %}
+                  {% for news, picture in daily_news %}
                       <div class="list-group-item list-group-item-action" style="margin-bottom:20px; overflow: hidden;">
-                          <img src="{{ news.cut_url }}" class="float-right" alt="Cinque Terre" width="100">
+                          <img src="{{ picture.item_url }}" class="float-right" alt="Cinque Terre" width="100">
                           <div>
                               <div>
-                                  <a href="{% url 'display:click' news.title_link %}" target="_blank" >{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
+                                  <a href="{% url 'display:click' news.title_link %}" target="_blank" id = "link_{{ forloop.counter0 }}">{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
                                   <p>浏览数:<span>{{news.view_count}}</span> 来源:<span>{{news.author}}</span> 时间:<span>{{news.collect_time}}</span></p>
+
+                                  <!-- Button to Open the Modal -->
+                                  {% if news.item_title not in collection_list %}
+                                      <button id='click_{{ forloop.counter0 }}' type="button" class="btn btn-outline-primary" onclick="collection('{{ news.title_link }}', '{{news.item_title}}', '{{ news.category }}', 'click_{{ forloop.counter0 }}')">
+                                          收藏
+                                      </button>
+                                  {% else %}
+                                      <button type="button" class="btn">
+                                      收藏
+                                     </button>
+                                  {% endif %}
+
                               </div>
                           </div>
                       </div>
                   {% endfor %}
               {% endif %}
+
           </div>
 
           <div class="another-content" style="display:inline-block;width:30%;height:200px;padding:0 20px ;vertical-align: top;" >
@@ -131,22 +177,64 @@
 	  <h2 style="display:block;line-height:76px;">今日推荐</h2>
 
           {% for news in recommended_news %}
-	      <div class="list-group-item list-group-item-action" style="margin-bottom:20px; overflow: hidden;">
-	          <img src="{{ news.cut_url }}" class="float-right" alt="Cinque Terre" width="100">
-	          <div>
-	              <div>
-	                  <a href="{% url 'display:click' news.title_link %}">{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
-	                  <p>浏览数:<span>{{news.view_count}}</span> 来源:<span>{{news.author}}</span> 时间:<span>{{news.collect_time}}</span></p>
-	              </div>
-	          </div>
-	      </div>
+              <div class="list-group-item list-group-item-action" style="margin-bottom:20px; overflow: hidden;">
+                  <img src="{{ news.cut_url }}" class="float-right" alt="Cinque Terre" width="100">
+                  <div>
+                      <div>
+                          <a href="{% url 'display:click' news.title_link %}">{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
+                          <p>浏览数:<span>{{news.view_count}}</span> 来源:<span>{{news.author}}</span> 时间:<span>{{news.collect_time}}</span></p>
+                          <!-- Button to Open the Modal -->
+                                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                      收藏
+                                  </button>
+                                  <!-- The Modal -->
+                                  <div class="modal fade" id="myModal">
+                                      <div class="modal-dialog">
+                                          <div class="modal-content">
+                                              <!-- Modal Header -->
+                                              <div class="modal-header">
+                                                  <h4 class="modal-title">添加收藏</h4>
+                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              </div>
+                                              <!-- Modal body -->
+                                              <form action='' method='post'>
+                                                  <div class="modal-body">
+                                                      <div class="form-group">
+                                                          <label for="usr">收藏夹</label>
+                                                          <input type="text" class="form-control" id="usr">
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <label for="pwd">收藏内容</label>
+                                                          <input type="password" class="form-control" id="pwd">
+                                                      </div>
+                                                  </div>
+
+                                                  <!-- Modal footer -->
+                                                  <div class="modal-footer">
+                                                      <button type="submit" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                  </div>
+                                              </form>
+                                          </div>
+                                      </div>
+                                  </div>
+                      </div>
+                  </div>
+              </div>
+
+              {% empty %}
+              <div class="alert alert-info" style="margin: 1%">
+                  <strong>新用户？</strong> 还没添加兴趣爱好哦
+              </div>
           {% endfor %}
       </div>
 	  <div class="another-content" style="display:inline-block;width:30%;height:200px;padding:0 20px ;vertical-align: top;" >
             <div style="width:100%; background: white;margin-bottom:20px; border: 2px solid lightblue; border-radius: 8px;">
                 <ol class="d">
                     {% for news in recommended_news_list %}
-                    <a href="news.title_link"><li>{{ news.item_title}}</li></a>
+                        <a href="news.title_link"><li>{{ news.item_title}}</li></a>
+
+                        {% empty %}
+                        <p>添加爱好后会有哦</p>
                     {% endfor %}
                 </ol>
             </div>
@@ -165,6 +253,40 @@
 	              <div>
 	                  <a href="{% url 'display:click' news.title_link %}">{{news.item_title}}</a><span style="display: inline-block;background:rgba(0,174,255,.5);padding: 0 5px;border-radius:5px;color: #fff;line-height:1.5;font-size:1rem;margin-left:5px;cursor: pointer;">{{ news.category }}</span>
 	                  <p>浏览数:<span>{{news.view_count}}</span> 来源:<span>{{news.author}}</span> 时间:<span>{{news.collect_time}}</span></p>
+                      <!-- Button to Open the Modal -->
+                                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                      收藏
+                                  </button>
+                                  <!-- The Modal -->
+                                  <div class="modal fade" id="myModal">
+                                      <div class="modal-dialog">
+                                          <div class="modal-content">
+                                              <!-- Modal Header -->
+                                              <div class="modal-header">
+                                                  <h4 class="modal-title">添加收藏</h4>
+                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              </div>
+                                              <!-- Modal body -->
+                                              <form action='' method='post'>
+                                                  <div class="modal-body">
+                                                      <div class="form-group">
+                                                          <label for="usr">收藏夹</label>
+                                                          <input type="text" class="form-control" id="usr">
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <label for="pwd">收藏内容</label>
+                                                          <input type="password" class="form-control" id="pwd">
+                                                      </div>
+                                                  </div>
+
+                                                  <!-- Modal footer -->
+                                                  <div class="modal-footer">
+                                                      <button type="submit" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                  </div>
+                                              </form>
+                                          </div>
+                                      </div>
+                                  </div>
 	              </div>
 	          </div>
 	      </div>

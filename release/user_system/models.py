@@ -13,7 +13,7 @@ class User(models.Model):
 
     fans_count = models.IntegerField(default=0)
     read_count = models.IntegerField(default=0)
-    labels = models.CharField(max_length=100, default="待探索")
+    labels = models.CharField(max_length=100, default=None, null=True)
 
     collect_count = models.IntegerField(default=0)
     code = models.IntegerField(default=000000)
@@ -53,10 +53,10 @@ class Fan(models.Model):
 
 class Interest(models.Model):
     user = models.OneToOneField(User)
-    first_interest = models.CharField(default=None, max_length=20)
-    second_interest = models.CharField(default=None, max_length=20)
-    third_interest = models.CharField(default=None, max_length=20)
-    key_words = models.CharField(default=None, max_length=10)
+    first_interest = models.CharField(default=None, max_length=20, null=True)
+    second_interest = models.CharField(default=None, max_length=20, null=True)
+    third_interest = models.CharField(default=None, max_length=20, null=True)
+    key_words = models.CharField(default=None, max_length=10, null=True)
 
     def __str__(self):
         return self.first_interest
@@ -72,3 +72,24 @@ class History(models.Model):
 
     def __str__(self):
         return self.item_title
+
+
+class Collection(models.Model):
+    label = models.ForeignKey(
+        'Label',
+        on_delete=models.CASCADE,
+    )
+    title_link = models.URLField(default='www.baidu.com')
+    item_title = models.CharField(default='news', max_length=50, unique=True)
+
+    def __str__(self):
+        return self.item_title
+
+
+class Label (models.Model):
+    user = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+    )
+    label = models.CharField(default='最喜欢', max_length=10, unique=True)
+

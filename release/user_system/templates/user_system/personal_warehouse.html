@@ -2,18 +2,32 @@
 {% block title %}个人收藏{% endblock %}
 
 {% block content %}
-			  <div class="container">
-                  <ul class="nav nav-tabs">
-                      <li class="nav-item">
-                          <a class="nav-link" href="{% url 'display:personal_info' %}">个人信息</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href='{% url 'display:personal_warehouse' %}'>收藏</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="{% url 'display:personal_interest' %}">兴趣偏好</a>
-                      </li>
-                  </ul>
-              </div>
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'display:personal_info' %}">个人信息</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href='{% url 'display:personal_warehouse' %}'>收藏</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'display:personal_interest' %}">兴趣偏好</a>
+            </li>
+        </ul>
+
+        <div class="card-columns" style="margin: 1%">
+            {% for collection in request.collections %}
+            <div class="card bg-light">
+                <p><strong>最喜欢:</strong></p>
+                <div class="card-body text-center">
+                    {% for record in collection %}
+                    <a href = '{{ record.url }}'><p class="card-text">{{ record.name }}</p></a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
 
 {% endblock %}

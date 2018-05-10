@@ -14,7 +14,69 @@
                 <a class="nav-link active" href="{% url 'display:personal_interest' %}">兴趣偏好</a>
             </li>
         </ul>
-    </div>
+        <div class="alert alert-info" style="margin: 1%">
+            <strong>{{ title }}</strong> {{ error_info }}
+        </div>
 
+        <div class="card-columns" style="margin: 1%">
+        <div class="card bg-light">
+            <div class="card-body text-center">
+                <p class="card-text">{{ first }}</p>
+                <span class="badge badge-primary">一等最爱</span>
+            </div>
+        </div>
+
+        <div class="card bg-light">
+            <div class="card-body text-center">
+                <p class="card-text">{{ second }}</p>
+                <span class="badge badge-warning">次等最爱</span>
+            </div>
+        </div>
+
+        <div class="card bg-light">
+            <div class="card-body text-center">
+                <p class="card-text">{{ third }}</p>
+                <span class="badge badge-secondary">末等最爱</span>
+            </div>
+        </div>
+        </div>
+
+    <form class="form-inline" action="{% url 'display:modify_interest' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleInputName2">一等公民：</label>
+            <input type="text" class="form-control col-lg-4" id="1" placeholder="修改最爱" name="first">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputName2">二等公民：</label>
+            <input type="text" class="form-control col-lg-4" id="2" placeholder="修改次爱" name="second">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputName2">三等公民：</label>
+            <input type="text" class="form-control col-lg-4" id="3" placeholder="修改末爱" name="third">
+        </div>
+        <button type="submit" class="btn btn-primary">修改</button>
+
+    </form>
+
+        <div>
+            <div class="card-columns" style="margin: 1%">
+                <div class="card bg-light">
+                    <div class="card-body text-center">
+                        <p class="card-text">{{ keywords }}</p>
+                        <span class="badge badge-primary">关键字</span>
+                    </div>
+                </div>
+            </div>
+            <form action="{% url 'display:modify_keywords' %}" class="form-inline" method="post">
+                {% csrf_token %}
+                <div class="form-group" style="margin: 1%">
+                    <label for="exampleInputName2">关键字：</label>
+                    <input type="text" class="form-control col-lg-4" id="1" placeholder="修改关键字" name="keywords">
+                    <button type="submit" class="btn btn-primary">修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}
