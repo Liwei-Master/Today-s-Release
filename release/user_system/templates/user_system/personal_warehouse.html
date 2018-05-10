@@ -1,5 +1,6 @@
 {% extends 'user_system/base.html' %}
 {% block title %}个人收藏{% endblock %}
+{% load filter %}
 
 {% block content %}
     <div class="container">
@@ -16,12 +17,12 @@
         </ul>
 
         <div class="card-columns" style="margin: 1%">
-            {% for collection in request.collections %}
+            {% for label in labels %}
             <div class="card bg-light">
-                <p><strong>最喜欢:</strong></p>
+                <p><strong>{{ label }}</strong></p>
                 <div class="card-body text-center">
-                    {% for record in collection %}
-                    <a href = '{{ record.url }}'><p class="card-text">{{ record.name }}</p></a>
+                    {% for record in collections|dic_value:label %}
+                    <a href = '{{ record.title_link }}'><p class="card-text">{{ record.item_title }}</p></a>
                     {% endfor %}
                 </div>
             </div>

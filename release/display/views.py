@@ -14,6 +14,7 @@ def index(request, **kwargs):
     news = Item.objects.order_by("collect_time")
     daily_news = Item.objects.order_by("collect_time")[:6]
     pictures = Images.objects.order_by("collect_time")[:6]
+    # forloop展示图片
     daily_news = zip(daily_news, pictures)
     daily_news_list = Item.objects.order_by("collect_time")[6:16]
     # 配图展示
@@ -22,6 +23,9 @@ def index(request, **kwargs):
     recommended_news_list = []
     # 过滤已收藏标题
     collection_list = []
+
+    keywords_news = []
+    keywords_news_list = []
 
     if request.session.get('is_login', None):
         user_id = request.session['user_id']
@@ -34,27 +38,35 @@ def index(request, **kwargs):
         interest = user.interest
         if interest.first_interest:
             first_interest = interest.first_interest
-            recommended_news_first = news.order_by('collect_time').filter(category=first_interest)[:5]
+            news_group = news.order_by('collect_time').filter(category=first_interest)[:15]
+            recommended_news_first = news_group[:5]
             recommended_news.extend(recommended_news_first)
 
-            recommended_news_list_first = news.order_by('collect_time').filter(category=first_interest)[5:11]
+            recommended_news_list_first = news_group[5:11]
             recommended_news_list.extend(recommended_news_list_first)
 
         if interest.second_interest:
             second_interest = interest.second_interest
-            recommended_news_second = news.order_by('collect_time').filter(category=second_interest)[:3]
+            news_group = news.order_by('collect_time').filter(category=second_interest)[:7]
+            recommended_news_second = news_group[:3]
             recommended_news.extend(recommended_news_second)
 
-            recommended_news_list_second = news.order_by('collect_time').filter(category=second_interest)[3:7]
+            recommended_news_list_second = news_group[3:]
             recommended_news_list.extend(recommended_news_list_second)
 
         if interest.third_interest:
             third_interest = interest.third_interest
-            recommended_news_third = news.order_by('collect_time').filter(category=third_interest)[:2]
+            news_group = news.order_by('collect_time').filter(category=third_interest)[:4]
+            recommended_news_third = news_group[:2]
             recommended_news.extend(recommended_news_third)
 
-            recommended_news_list_third = news.order_by('collect_time').filter(category=third_interest)[2:4]
+            recommended_news_list_third = news_group[2:]
             recommended_news_list.extend(recommended_news_list_third)
+
+        keywords = interest.key_words
+        keywords_news_20 = news.order_by('collect_time').filter(item_title__contains=keywords)[:20]
+        keywords_news = keywords_news_20[:6]
+        keywords_news_list = keywords_news_20[6:16]
 
     #
     hit_news = news.order_by('collect_time')[:6]
@@ -68,6 +80,8 @@ def index(request, **kwargs):
                'hit_news': hit_news,
                'hit_news_list': hit_news_list,
                'collection_list': collection_list,
+               'keywords_news': keywords_news,
+               'keywords_news_list': keywords_news_list,
                'info': kwargs.get('info', '初次见面，请多关注！')
                }
 
@@ -154,9 +168,22 @@ def personal_warehouse(request):
     user_id = request.session['user_id']
     user = User.objects.get(pk=user_id)
     history = user.history_set.all()[:10]
+    labels_list = user.label_set.all()
+    labels = []
+    for item in labels_list:
+        labels.append(item.label)
+
+    collections = {}
+    for item in labels_list:
+        collection = []
+        for record in item.collection_set.all():
+            collection.append(record)
+        collections[item.label] = collection
 
     context = {
-        'history': history
+        'history': history,
+        'collections': collections,
+        'labels': labels,
     }
 
     return render(request, 'user_system/personal_warehouse.html', context)
