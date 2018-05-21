@@ -13,8 +13,9 @@ import json
 def index(request, **kwargs):
     news = Item.objects.order_by("collect_time")
     daily_news = Item.objects.order_by("collect_time")[:6]
-    pictures = Images.objects.order_by("collect_time")[:6]
+    pictures_all = Images.objects.order_by("collect_time")[:30]
     # forloop展示图片
+    pictures = pictures_all[:6]
     daily_news = zip(daily_news, pictures)
     daily_news_list = Item.objects.order_by("collect_time")[6:16]
     # 配图展示
@@ -63,12 +64,19 @@ def index(request, **kwargs):
             recommended_news_list_third = news_group[2:]
             recommended_news_list.extend(recommended_news_list_third)
 
+        pictures = pictures_all[6:12]
+        recommended_news = zip(recommended_news, pictures)
+
         keywords = interest.key_words
         keywords_news_20 = news.order_by('collect_time').filter(item_title__contains=keywords)[:20]
         keywords_news = keywords_news_20[:6]
+
+        pictures = pictures_all[12:18]
+        keywords_news = zip(keywords_news, pictures)
         keywords_news_list = keywords_news_20[6:16]
 
     #
+    pictures = pictures_all[18:24]
     hit_news = news.order_by('collect_time')[:6]
     hit_news_list = news.order_by('collect_time')[6:16]
 
@@ -95,10 +103,14 @@ def recommendation():
     # 分类模块
 def category(request, category):
     news = Item.objects.order_by("collect_time")
-    daily_news = news.order_by('collect_time').filter(category=category)[:6]
+    news = news.order_by('collect_time').filter(category=category)[:20]
+    length = str(len(news))
+    pictures = Images.objects.order_by("collect_time")[:20]
+    daily_news = zip(news, pictures)
 
     context = {
         'daily_news': daily_news,
+        'info': '一共有' + length + '条记录！',
         }
 
     return render(request, 'display/category.html', context)
@@ -107,9 +119,16 @@ def category(request, category):
 def search(request):
     if request.POST:
         keywords = request.POST.get('keywords')
-        result = Item.objects.filter(item_title__contains=keywords)[:6]
+        result = Item.objects.filter(item_title__contains=keywords)
+        length = str(len(result))
+
+        result = Item.objects.filter(item_title__contains=keywords)[:20]
+        pictures = Images.objects.order_by('collect_time')[:20]
+        result = zip(result, pictures)
+
         context = {
             'daily_news': result,
+            'info': '一共有' + length + '条记录！',
         }
 
         return render(request, 'display/category.html', context)

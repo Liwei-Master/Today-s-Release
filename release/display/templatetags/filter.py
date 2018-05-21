@@ -6,3 +6,4 @@ register = template.Library()
 def dic_value(dic, key):
     return dic[key]
 
+print(type(register))
