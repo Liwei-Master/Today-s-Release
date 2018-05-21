@@ -13,7 +13,7 @@ Django(back-end)
 
 scripy(爬虫)
 
-Vue.js(front-end)
+jQuery
 
 Bootstrap
 
@@ -23,8 +23,8 @@ wsgi
 
 ## 成员
 
-立维
+立维：负责前端，后端，服务器，小部分爬虫
 
-蛇崽
+蛇崽：负责爬虫部分
 
 联系方式：296390818@qq.com
